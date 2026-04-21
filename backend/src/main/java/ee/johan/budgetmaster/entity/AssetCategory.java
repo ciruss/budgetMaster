@@ -2,7 +2,6 @@ package ee.johan.budgetmaster.entity;
 
 import ee.johan.budgetmaster.dto.AssetType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class AssetCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
