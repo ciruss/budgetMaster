@@ -1,9 +1,7 @@
 package ee.johan.budgetmaster.dto;
 
-public record AssetDto(
-        Long id,
+public record CreateAssetRequest(
         String name,
         AssetType kind,
-        Long categoryId,
-        Long userId
+        Long categoryId
 ) {}
