@@ -8,5 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    Optional<List<Transaction>> findByUserIdAndDateBetween(Long userId, LocalDate start, LocalDate end);
+    List<Transaction> findByUserIdAndDateBetween(Long userId, LocalDate start, LocalDate end);
+
+    Optional<Transaction> findByIdAndUserId(Long id, Long userId);
 }

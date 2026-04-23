@@ -1,40 +1,30 @@
 package ee.johan.budgetmaster.controller;
 
+import ee.johan.budgetmaster.dto.AuthToken;
 import ee.johan.budgetmaster.dto.LoginRequest;
 import ee.johan.budgetmaster.dto.SignupRequest;
 import ee.johan.budgetmaster.dto.UserDto;
 import ee.johan.budgetmaster.entity.User;
 import ee.johan.budgetmaster.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import ee.johan.budgetmaster.security.JwtService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import java.time.Instant;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserRepository userRepository,
-                          PasswordEncoder passwordEncoder) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final JwtService jwtService;
 
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
@@ -53,26 +43,24 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password())
-        );
+    public ResponseEntity<AuthToken> login(@RequestBody LoginRequest request) {
+        if (request.email() == null) {
+            throw new RuntimeException("Cannot login without email");
+        }
 
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("Email invalid"));
 
-        HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+            throw new RuntimeException("Password invalid");
+        }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(jwtService.generateAuthToken(user));
     }
 
     @PostMapping("/auth/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+    public ResponseEntity<?> logout() {
+        // Stateless JWT; client side removes token
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().build();
     }
@@ -84,8 +72,8 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String email = authentication.getName();
-        return userRepository.findByEmail(email)
+        Long userId = Long.valueOf(authentication.getPrincipal().toString());
+        return userRepository.findById(userId)
                 .map(user -> ResponseEntity.ok(
                         new UserDto(
                                 user.getId(),
