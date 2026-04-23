@@ -1,9 +1,8 @@
 package ee.johan.budgetmaster.controller;
 
 import ee.johan.budgetmaster.dto.SignupRequest;
-import ee.johan.budgetmaster.dto.UpdateUserRequest;
-import ee.johan.budgetmaster.entity.User;
-import ee.johan.budgetmaster.repository.UserRepository;
+import ee.johan.budgetmaster.dto.UserDto;
+import ee.johan.budgetmaster.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +12,15 @@ import java.util.List;
 @RequestMapping("/api")
 @AllArgsConstructor
 public class UserController {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/users")
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getUsers() {
+        return userService.getAllUsers();
     }
 
     @PostMapping("/signup")
     public void createUser(@RequestBody SignupRequest request) {
-        User newUser = new User();
-        newUser.setEmail(request.email());
-        newUser.setPasswordHash(request.password());
-
-        userRepository.save(newUser);
+        userService.createUser(request);
     }
 }
