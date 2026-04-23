@@ -3,6 +3,7 @@ package ee.johan.budgetmaster.controller;
 import ee.johan.budgetmaster.dto.CreateTransactionCategoryRequest;
 import ee.johan.budgetmaster.dto.TransactionCategoryDto;
 import ee.johan.budgetmaster.service.TransactionCategoryService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/categories")
 public class TransactionCategoryController {
 
     private final TransactionCategoryService categoryService;
-
-    public TransactionCategoryController(TransactionCategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     private Long getCurrentUserId() {
         return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());

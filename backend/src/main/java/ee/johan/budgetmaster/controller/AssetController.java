@@ -5,6 +5,7 @@ import ee.johan.budgetmaster.dto.AssetSnapshotDto;
 import ee.johan.budgetmaster.dto.CreateAssetRequest;
 import ee.johan.budgetmaster.dto.CreateAssetSnapshotRequest;
 import ee.johan.budgetmaster.service.AssetService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,14 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/assets")
 public class AssetController {
 
     private final AssetService assetService;
-
-    public AssetController(AssetService assetService) {
-        this.assetService = assetService;
-    }
 
     private Long getCurrentUserId() {
         return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());

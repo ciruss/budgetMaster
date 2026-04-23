@@ -3,19 +3,17 @@ package ee.johan.budgetmaster.controller;
 import ee.johan.budgetmaster.dto.MonthlyBudgetDto;
 import ee.johan.budgetmaster.dto.UpsertBudgetRequest;
 import ee.johan.budgetmaster.service.BudgetService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/budgets")
 public class BudgetController {
 
     private final BudgetService budgetService;
-
-    public BudgetController(BudgetService budgetService) {
-        this.budgetService = budgetService;
-    }
 
     private Long getCurrentUserId() {
         return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());

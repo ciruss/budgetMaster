@@ -3,6 +3,7 @@ package ee.johan.budgetmaster.controller;
 import ee.johan.budgetmaster.dto.NetWorthDto;
 import ee.johan.budgetmaster.dto.SummaryDto;
 import ee.johan.budgetmaster.service.SummaryService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api")
 public class SummaryController {
 
     private final SummaryService summaryService;
-
-    public SummaryController(SummaryService summaryService) {
-        this.summaryService = summaryService;
-    }
 
     private Long getCurrentUserId() {
         return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
