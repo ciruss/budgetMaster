@@ -29,7 +29,7 @@ public class User {
 
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Asset> assets;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

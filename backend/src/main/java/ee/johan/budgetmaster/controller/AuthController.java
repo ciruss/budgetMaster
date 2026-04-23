@@ -60,7 +60,6 @@ public class AuthController {
 
     @PostMapping("/auth/logout")
     public ResponseEntity<?> logout() {
-        // Stateless JWT; client side removes token
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().build();
     }
