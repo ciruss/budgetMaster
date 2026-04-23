@@ -12,26 +12,20 @@ import ee.johan.budgetmaster.repository.AssetCategoryRepository;
 import ee.johan.budgetmaster.repository.AssetRepository;
 import ee.johan.budgetmaster.repository.AssetSnapshotRepository;
 import ee.johan.budgetmaster.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AssetService {
 
     private final AssetRepository assetRepository;
     private final AssetSnapshotRepository assetSnapshotRepository;
     private final UserRepository userRepository;
     private final AssetCategoryRepository assetCategoryRepository;
-
-    public AssetService(AssetRepository assetRepository, AssetSnapshotRepository assetSnapshotRepository,
-                        UserRepository userRepository, AssetCategoryRepository assetCategoryRepository) {
-        this.assetRepository = assetRepository;
-        this.assetSnapshotRepository = assetSnapshotRepository;
-        this.userRepository = userRepository;
-        this.assetCategoryRepository = assetCategoryRepository;
-    }
 
     public List<AssetDto> listByUser(Long userId) {
         return assetRepository.findByUserId(userId).stream()

@@ -11,6 +11,7 @@ import ee.johan.budgetmaster.repository.AssetRepository;
 import ee.johan.budgetmaster.repository.TransactionCategoryRepository;
 import ee.johan.budgetmaster.repository.TransactionRepository;
 import ee.johan.budgetmaster.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,23 +20,13 @@ import java.time.YearMonth;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final TransactionCategoryRepository categoryRepository;
     private final AssetRepository assetRepository;
-
-    public TransactionService(
-            TransactionRepository transactionRepository,
-            UserRepository userRepository,
-            TransactionCategoryRepository categoryRepository,
-            AssetRepository assetRepository) {
-        this.transactionRepository = transactionRepository;
-        this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
-        this.assetRepository = assetRepository;
-    }
 
     @Transactional(readOnly = true)
     public List<TransactionDto> listByMonth(Long userId, String yearMonthStr) {

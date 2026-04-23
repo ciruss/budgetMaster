@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface AssetSnapshotRepository extends JpaRepository<AssetSnapshot, Long> {
     List<AssetSnapshot> findByAssetIdOrderBySnapshotDateDesc(Long assetId);
+
     Optional<AssetSnapshot> findFirstByAssetIdAndSnapshotDateLessThanEqualOrderBySnapshotDateDesc(Long assetId, LocalDate date);
 }

@@ -9,6 +9,7 @@ import ee.johan.budgetmaster.repository.AssetRepository;
 import ee.johan.budgetmaster.repository.AssetSnapshotRepository;
 import ee.johan.budgetmaster.repository.TransactionRepository;
 import ee.johan.budgetmaster.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class SummaryService {
 
     private final TransactionRepository transactionRepository;
@@ -27,18 +29,6 @@ public class SummaryService {
     private final AssetSnapshotRepository assetSnapshotRepository;
     private final BudgetService budgetService;
     private final UserRepository userRepository;
-
-    public SummaryService(TransactionRepository transactionRepository,
-                          AssetRepository assetRepository,
-                          AssetSnapshotRepository assetSnapshotRepository,
-                          BudgetService budgetService,
-                          UserRepository userRepository) {
-        this.transactionRepository = transactionRepository;
-        this.assetRepository = assetRepository;
-        this.assetSnapshotRepository = assetSnapshotRepository;
-        this.budgetService = budgetService;
-        this.userRepository = userRepository;
-    }
 
     public SummaryDto summarize(Long userId, String yearMonthStr) {
         User user = userRepository.findById(userId).orElseThrow();

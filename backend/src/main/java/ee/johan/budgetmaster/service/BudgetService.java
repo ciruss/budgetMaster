@@ -6,20 +6,17 @@ import ee.johan.budgetmaster.entity.MonthlyBudget;
 import ee.johan.budgetmaster.entity.User;
 import ee.johan.budgetmaster.repository.MonthlyBudgetRepository;
 import ee.johan.budgetmaster.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class BudgetService {
 
     private final MonthlyBudgetRepository budgetRepository;
     private final UserRepository userRepository;
-
-    public BudgetService(MonthlyBudgetRepository budgetRepository, UserRepository userRepository) {
-        this.budgetRepository = budgetRepository;
-        this.userRepository = userRepository;
-    }
 
     public Optional<MonthlyBudgetDto> getBudget(Long userId, String yearMonth) {
         return budgetRepository.findByUserIdAndYearMonth(userId, yearMonth)

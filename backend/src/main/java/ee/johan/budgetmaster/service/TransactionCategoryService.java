@@ -6,21 +6,18 @@ import ee.johan.budgetmaster.entity.TransactionCategory;
 import ee.johan.budgetmaster.entity.User;
 import ee.johan.budgetmaster.repository.TransactionCategoryRepository;
 import ee.johan.budgetmaster.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class TransactionCategoryService {
 
     private final TransactionCategoryRepository categoryRepository;
     private final UserRepository userRepository;
-
-    public TransactionCategoryService(TransactionCategoryRepository categoryRepository, UserRepository userRepository) {
-        this.categoryRepository = categoryRepository;
-        this.userRepository = userRepository;
-    }
 
     public List<TransactionCategoryDto> listByUser(Long userId) {
         return categoryRepository.findByUserId(userId).stream()
