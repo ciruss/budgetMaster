@@ -1,3 +1,5 @@
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? "/api").replace(/\/$/, "");
+
 export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   const token = sessionStorage.getItem("token");
   const headers: Record<string, string> = {
@@ -9,7 +11,7 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`/api${endpoint}`, {
+  const response = await fetch(`${apiBaseUrl}${endpoint}`, {
     ...options,
     headers,
   });
