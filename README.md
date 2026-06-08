@@ -1,6 +1,6 @@
 # BudgetMaster
 
-Live site: app.afterit.ee
+[Live site](https://app.afterit.ee)
 
 BudgetMaster is a full-stack personal finance app for tracking transactions, budgets, assets, and net worth.
 
