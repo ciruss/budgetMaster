@@ -1,61 +1,74 @@
-import { RouterProvider, createRouter, createRoute, createRootRoute } from '@tanstack/react-router';
-import { Layout } from './components/Layout';
-import { Login, Signup } from './pages/Auth';
-import { Dashboard, Transactions, Assets, History } from './pages/index';
+import {
+  RouterProvider,
+  createRouter,
+  createRoute,
+  createRootRoute,
+} from "@tanstack/react-router";
+import { Layout } from "./components/Layout";
+import { Login, Signup } from "./pages/Auth";
+import Dashboard from "./pages";
+import Transactions from "./pages/Transactions";
+import Assets from "./pages/Assets";
+import History from "./pages/History";
 
 const rootRoute = createRootRoute();
 
 const layoutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  id: 'layout',
+  id: "layout",
   component: Layout,
 });
 
 const dashboardRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/',
+  path: "/",
   component: Dashboard,
 });
 
 const transactionsRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/transactions',
+  path: "/transactions",
   component: Transactions,
 });
 
 const assetsRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/assets',
+  path: "/assets",
   component: Assets,
 });
 
 const historyRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/history',
+  path: "/history",
   component: History,
 });
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/login',
+  path: "/login",
   component: Login,
 });
 
 const signupRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/signup',
+  path: "/signup",
   component: Signup,
 });
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
   signupRoute,
-  layoutRoute.addChildren([dashboardRoute, transactionsRoute, assetsRoute, historyRoute]),
+  layoutRoute.addChildren([
+    dashboardRoute,
+    transactionsRoute,
+    assetsRoute,
+    historyRoute,
+  ]),
 ]);
 
 const router = createRouter({ routeTree });
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }
